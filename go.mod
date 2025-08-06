@@ -3,7 +3,7 @@ module github.com/tr1sm0s1n/fiber-postgres-api
 go 1.22.0
 
 require (
-	github.com/gofiber/fiber/v2 v2.52.6
+	github.com/gofiber/fiber/v2 v2.52.9
 	gorm.io/driver/postgres v1.5.7
 	gorm.io/gorm v1.25.8
 )
