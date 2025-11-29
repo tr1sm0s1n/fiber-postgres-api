@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/tr1sm0s1n/fiber-postgres-api/controllers"
 	"github.com/tr1sm0s1n/fiber-postgres-api/db"
 	"github.com/tr1sm0s1n/fiber-postgres-api/middlewares"
 	"github.com/tr1sm0s1n/fiber-postgres-api/models"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
@@ -25,20 +25,13 @@ func main() {
 		return middlewares.Authority(ctx)
 	})
 
-	app.Post("/create", func(ctx *fiber.Ctx) error {
-		return controllers.CreateOne(ctx, db)
-	})
-	app.Get("/read", func(ctx *fiber.Ctx) error {
-		return controllers.ReadAll(ctx, db)
-	})
-	app.Get("/read/:id", func(ctx *fiber.Ctx) error {
-		return controllers.ReadOne(ctx, db)
-	})
-	app.Put("/update/:id", func(ctx *fiber.Ctx) error {
-		return controllers.UpdateOne(ctx, db)
-	})
-	app.Delete("/delete/:id", func(ctx *fiber.Ctx) error {
-		return controllers.DeleteOne(ctx, db)
-	})
+	controllers := controllers.NewControllers(db)
+
+	app.Post("/create", controllers.CreateOne)
+	app.Get("/read", controllers.ReadAll)
+	app.Get("/read/:id", controllers.ReadOne)
+	app.Put("/update/:id", controllers.UpdateOne)
+	app.Delete("/delete/:id", controllers.DeleteOne)
+
 	app.Listen(":8080")
 }
